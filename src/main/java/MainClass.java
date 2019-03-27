@@ -9,6 +9,8 @@ public class MainClass {
         SessionFactory factory = new Configuration()
                 .configure("hibernate.cfg.xml")
                 .addAnnotatedClass(Book.class)
+                .addAnnotatedClass(Author.class)
+                .addAnnotatedClass(Reader.class)
                 .buildSessionFactory();
 
         Session session = null;
@@ -44,13 +46,13 @@ public class MainClass {
 //            session.getTransaction().commit();
 
             // Получить список всех книг
-            session = factory.getCurrentSession();
-            session.beginTransaction();
-            List<Book> allBooks = session.createQuery("FROM Book").getResultList();
-            System.out.println(allBooks);
-            // from Book b where b.title='Harry Potter' OR b.authorName='Rowling'
-            //     OR b.title LIKE 'Harry%'
-            session.getTransaction().commit();
+//            session = factory.getCurrentSession();
+//            session.beginTransaction();
+//            List<Book> allBooks = session.createQuery("FROM Book").getResultList();
+//            System.out.println(allBooks);
+//            // from Book b where b.title='Harry Potter' OR b.authorName='Rowling'
+//            //     OR b.title LIKE 'Harry%'
+//            session.getTransaction().commit();
 
             // Массовое обновление
 //            session = factory.getCurrentSession();
@@ -58,6 +60,27 @@ public class MainClass {
 //            session.createQuery("update Book set title='A';").executeUpdate();
 //            session.createQuery("delete from Book where id=50").executeUpdate();
 //            session.getTransaction().commit();
+
+//            session = factory.getCurrentSession();
+//            session.beginTransaction();
+//            Book book = session.get(Book.class, 1);
+//            session.delete(book);
+//            System.out.println(book);
+//            session.getTransaction().commit();
+
+//            session = factory.getCurrentSession();
+//            session.beginTransaction();
+//            Author author = session.get(Author.class, 1);
+//            System.out.println(author);
+//            System.out.println(author.getBooks());
+//            session.getTransaction().commit();
+
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+            Book book = session.get(Book.class, 1);
+            System.out.println(book.getReaders());
+            System.out.println(book.getReaders().get(0).getBooks());
+            session.getTransaction().commit();
 
         } finally {
             factory.close();
